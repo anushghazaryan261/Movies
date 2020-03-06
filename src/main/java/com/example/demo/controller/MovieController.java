@@ -3,8 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.model.Movie;
 import com.example.demo.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class MovieController {
@@ -35,20 +38,16 @@ public class MovieController {
     }
 
     @GetMapping(value = "/movie/{id}")
-    public void findById(@PathVariable int id){
-        if (movieService.getMovieById(id)!=null) {
-            System.out.println("The movie with id= " + id);
-            System.out.println(movieService.getMovieById(id));
-        }else{
-            System.out.println("Something went wrong");
-        }
+    public ResponseEntity<Movie> findById(@PathVariable int id){
+        Movie movie=movieService.getMovieById(id);
+        return ResponseEntity.ok(movie);
     }
 
 
     @GetMapping(value = "/movie")
-    public void findAll(){
-        System.out.println("All movies");
-        movieService.findAll().forEach(System.out::println);
+    public ResponseEntity<List<Movie>> findAll(){
+        List<Movie> movies=movieService.findAll();
+        return ResponseEntity.ok(movies);
     }
 
 
